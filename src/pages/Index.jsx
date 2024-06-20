@@ -1,4 +1,4 @@
-import { Container, Text, VStack, Heading, Box, Image, Link, useColorModeValue } from "@chakra-ui/react";
+import { Container, Text, VStack, Heading, Box, Image, Link, useColorModeValue, Button } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
 const Index = () => {
@@ -11,6 +11,12 @@ const Index = () => {
     const storedPosts = JSON.parse(localStorage.getItem("posts")) || [];
     setPosts(storedPosts);
   }, []);
+
+  const handleDelete = (index) => {
+    const updatedPosts = posts.filter((_, i) => i !== index);
+    setPosts(updatedPosts);
+    localStorage.setItem("posts", JSON.stringify(updatedPosts));
+  };
 
   return (
     <Container centerContent maxW="container.md" height="100vh" display="flex" flexDirection="column" justifyContent="center" alignItems="center" bg={bgColor}>
@@ -32,6 +38,7 @@ const Index = () => {
               <Heading as="h3" size="md" color={textColor}>{post.title}</Heading>
               <Text fontSize="sm" color="gray.500">{post.date}</Text>
               <Text mt={2} color={textColor}>{post.content}</Text>
+              <Button colorScheme="red" size="sm" mt={2} onClick={() => handleDelete(index)}>Delete</Button>
             </Box>
           ))}
         </VStack>
